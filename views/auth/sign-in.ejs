@@ -1,21 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign In</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+  <style>
+    body {
+      background-image: url('/images/anime.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .navbar {
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .navbar-item,
+    .navbar-link {
+      color: #fff;
+    }
+
+    .navbar-item:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .main-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card.with-background {
+      background-image: url('/images/anime.jpg');
+      background-size: cover;
+      background-position: center;
+      width: 400px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+    }
+
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 2rem;
+      border-radius: 10px;
+    }
+
+    .card.with-background input,
+    .card.with-background label {
+      color: white;
+    }
+
+    .card.with-background input {
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: 1px solid white;
+      border-radius: 4px;
+      padding: 0.75rem;
+      caret-color: white;
+    }
+
+    .card.with-background input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    input:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0px 1000px rgba(0, 0, 0, 0.5) inset;
+      -webkit-text-fill-color: white;
+    }
+
+    .button.is-primary {
+      background-color: #00d1b2;
+      border: none;
+    }
+
+    .button.is-primary:hover {
+      background-color: #00b89c;
+    }
+  </style>
 </head>
 <body>
-  <%- include('../partials/_navbar.ejs') %>
-  <h1>Sign in to MyAnimeTracker</h1>
-  <form action="/auth/sign-in" method="POST">
-    <label for="username">Username:</label>
-    <input type="text" name="username" id="username" required />
-    
-    <label for="password">Password:</label>
-    <input type="password" name="password" id="password" required />
-    
-    <button type="submit">Sign in</button>
-  </form>
+  <!-- Navbar -->
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item has-text-white" href="/">
+        <strong>MyAnimeTracker</strong>
+      </a>
+
+      <!-- Mobile menu toggle -->
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasic">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div id="navbarBasic" class="navbar-menu">
+      <div class="navbar-start"></div>
+      <div class="navbar-end">
+        <a class="navbar-item has-text-white" href="/auth/sign-up">Sign Up</a>
+        <a class="navbar-item has-text-white" href="/auth/sign-in">Sign In</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Sign-In Card -->
+  <div class="main-content">
+    <div class="card with-background">
+      <div class="overlay">
+        <h1 class="title has-text-white has-text-centered">Sign in to MyAnimeTracker</h1>
+        <form action="/auth/sign-in" method="POST">
+          <div class="field">
+            <label class="label" for="username">Username</label>
+            <div class="control">
+              <input class="input" type="text" name="username" id="username" required placeholder="Enter username" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label" for="password">Password</label>
+            <div class="control">
+              <input class="input" type="password" name="password" id="password" required placeholder="Enter password" />
+            </div>
+          </div>
+
+          <div class="field mt-4">
+            <div class="control">
+              <button class="button is-primary is-fullwidth" type="submit">
+                Sign In
+              </button>
+            </div>
+          </div>
+        </form>
+      </div> <!-- overlay -->
+    </div> <!-- card -->
+  </div>
 </body>
 </html>
+
+
+
+
+
