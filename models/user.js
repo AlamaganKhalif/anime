@@ -1,35 +1,47 @@
 const mongoose = require('mongoose');
 
-// Anime subdocument schema
 const animeSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
   },
+  episodes: {
+    type: Number,
+    min: 1
+  },
   episodesWatched: {
     type: Number,
     default: 0,
+    min: 0
   },
   status: {
     type: String,
     enum: ['watching', 'completed', 'on-hold', 'dropped', 'plan-to-watch'],
-    required: true,
+    default: 'plan-to-watch',
   },
-  notes: String,
-});
+  score: {
+    type: Number,
+    min: 1,
+    max: 10
+  },
+  review: String,
+  favorite: {
+    type: Boolean,
+    default: false,
+  }
+}, { timestamps: true });
 
-// User schema with embedded anime array
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
+    unique: true,
   },
   password: {
     type: String,
     required: true,
   },
-  application: [animeSchema], // 👈 renamed from "applications" to "animeList"
+  animeList: [animeSchema],
 });
 
-const User = mongoose.model('User', userSchema);
-module.exports = User;
+module.exports = mongoose.model('User', userSchema);

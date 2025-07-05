@@ -4,15 +4,35 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MyAnimeTracker</title>
+    <!-- Include Bulma -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
   </head>
   <body>
     <%- include('./partials/_navbar.ejs') %>
-    <h1>MyAnimeTracker</h1>
-    <p>Keep track of anime you’re watching, completed, or plan to watch.</p>
-    <a href="/auth/sign-up">Sign up</a>
-    <a href="/auth/sign-in">Sign in</a>
-    <a href="/users/<%= user._id %>/applications/new">Add Application</a>
 
+    <section class="section">
+      <div class="container">
+        <h1 class="title">MyAnimeTracker</h1>
+        <p class="subtitle">
+          Keep track of anime you’re watching, completed, or plan to watch.
+        </p>
 
+        <% if (user) { %>
+          <div class="buttons">
+            <a class="button is-link" href="/users/<%= user._id %>/anime/new">Add Anime</a>
+            <a class="button is-primary" href="/users/<%= user._id %>/anime">View Your List</a>
+          </div>
+        <% } else { %>
+          <div class="buttons">
+            <a class="button is-success" href="/auth/sign-up">Sign Up</a>
+            <a class="button is-info" href="/auth/sign-in">Sign In</a>
+          </div>
+        <% } %>
+      </div>
+    </section>
   </body>
 </html>
+

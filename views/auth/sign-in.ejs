@@ -7,12 +7,13 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
   <style>
     body {
-      background-image: url('/images/anime.jpg');
+      background-image: url('/images/');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       min-height: 100vh;
       margin: 0;
+      padding: 0;
       display: flex;
       flex-direction: column;
     }
@@ -24,10 +25,7 @@
     .navbar-item,
     .navbar-link {
       color: #fff;
-    }
-
-    .navbar-item:hover {
-      background-color: rgba(255, 255, 255, 0.1);
+      display: flex;
     }
 
     .main-content {
@@ -54,35 +52,37 @@
     }
 
     .card.with-background input,
-    .card.with-background label {
-      color: white;
-    }
+.card.with-background label {
+  color: white;
+}
 
-    .card.with-background input {
-      background-color: rgba(0, 0, 0, 0.5);
-      color: white;
-      border: 1px solid white;
-      border-radius: 4px;
-      padding: 0.75rem;
-      caret-color: white;
-    }
+.card.with-background input {
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent background */
+  color: white;                        /* ensures typed text is visible */
+  border: 1px solid white;
+  border-radius: 4px;
+  padding: 0.75rem;
+  caret-color: white;
+}
 
-    .card.with-background input::placeholder {
-      color: rgba(255, 255, 255, 0.7);
-    }
+/* Placeholder text color */
+.card.with-background input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
 
-    input:-webkit-autofill {
-      -webkit-box-shadow: 0 0 0px 1000px rgba(0, 0, 0, 0.5) inset;
-      -webkit-text-fill-color: white;
-    }
+/* Fix for Chrome autofill background */
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px rgba(0, 0, 0, 0.5) inset;
+  -webkit-text-fill-color: white;
+}
 
     .button.is-primary {
-      background-color: #00d1b2;
+      background-color: #3d9d8f;
       border: none;
     }
 
     .button.is-primary:hover {
-      background-color: #00b89c;
+      background-color: #022722;
     }
   </style>
 </head>
@@ -93,20 +93,12 @@
       <a class="navbar-item has-text-white" href="/">
         <strong>MyAnimeTracker</strong>
       </a>
-
-      <!-- Mobile menu toggle -->
-      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasic">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-      </a>
     </div>
 
-    <div id="navbarBasic" class="navbar-menu">
-      <div class="navbar-start"></div>
-      <div class="navbar-end">
-        <a class="navbar-item has-text-white" href="/auth/sign-up">Sign Up</a>
-        <a class="navbar-item has-text-white" href="/auth/sign-in">Sign In</a>
+    <div class="navbar-menu">
+      <div class="navbar-start">
+        <a class="navbar-item" href="/auth/sign-up">Sign Up</a>
+        <a class="navbar-item" href="/auth/sign-in">Sign In</a>
       </div>
     </div>
   </nav>
@@ -144,7 +136,6 @@
   </div>
 </body>
 </html>
-
 
 
 

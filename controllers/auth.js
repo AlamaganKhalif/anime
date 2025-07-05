@@ -1,81 +1,88 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
+const User = require('../models/user');
 
-const User = require('../models/user.js');
-const { model } = require('mongoose');
-
-
+// Sign-up Form
 router.get('/sign-up', (req, res) => {
-    res.render('auth/sign-up.ejs')
-})
-
-router.get('/sign-in', (req, res) => {
-    res.render('auth/sign-in.ejs')
-})
-
-
-router.get('/sign-out', (req, res) => {
-    req.session.destroy();
-    res.redirect('/')
-})
-
-
-
-router.post('/sign-up', async (req, res) => {
-    try {
-        const userInDatebase = await User.findOne({username: req.body.username});
-        if (userInDatebase) {
-            return res.send('Username already taken.');
-        }
-
-        if (req.body.password !== req.body.confirmPassword) {
-            return res.send('Password and Confrim Password must match')
-        }
-
-        const hashedPassword = bcrypt.hashSync(req.body.password,  12);
-        req.body.password = hashedPassword;
-
-        await User.create(req.body);
-        res.redirect('/auth/sign-in');
-    } catch (error) {
-        console.log(error)
-        res.redirect('/')
-    }
+  res.render('auth/sign-up', { error: null });
 });
 
+// Sign-in Form
+router.get('/sign-in', (req, res) => {
+  res.render('auth/sign-in', { error: null });
+});
 
-router.post('/sign-in', async (req, res) => {
-    try {
-      // First, get the user from the database
-      const userInDatabase = await User.findOne({ username: req.body.username });
-      if (!userInDatabase) {
-        return res.send('Login failed. Please try again.');
-      }
+// Sign-out
+router.get('/sign-out', (req, res) => {
+  req.session.destroy();
+  res.redirect('/');
+});
+
+// Sign-up Submission
+router.post('/sign-up', async (req, res) => {
+  try {
+    const { username, password, confirmPassword } = req.body;
     
-      // There is a user! Time to test their password with bcrypt
-      const validPassword = bcrypt.compareSync(
-        req.body.password,
-        userInDatabase.password
-      );
-      if (!validPassword) {
-        return res.send('Login failed. Please try again.');
-      }
-    
-      // There is a user AND they had the correct password. Time to make a session!
-      // Avoid storing the password, even in hashed format, in the session
-      // If there is other data you want to save to `req.session.user`, do so here!
-      req.session.user = {
-        username: userInDatabase.username,
-        _id: userInDatabase._id
-      };
-    
-      res.redirect('/');
-    } catch (error) {
-      console.log(error);
-      res.redirect('/');
+    // Validation
+    if (password !== confirmPassword) {
+      return res.render('auth/sign-up', { 
+        error: 'Password and Confirm Password must match' 
+      });
     }
-  });
+
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.render('auth/sign-up', { 
+        error: 'Username already taken' 
+      });
+    }
+
+    const hashedPassword = bcrypt.hashSync(password, 12);
+    const newUser = await User.create({ 
+      username, 
+      password: hashedPassword 
+    });
+
+    req.session.user = {
+      username: newUser.username,
+      _id: newUser._id
+    };
+
+    res.redirect('/');
+  } catch (error) {
+    console.error(error);
+    res.render('auth/sign-up', { 
+      error: 'An error occurred during registration' 
+    });
+  }
+});
+
+// Sign-in Submission
+router.post('/sign-in', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const user = await User.findOne({ username });
+
+    if (!user || !bcrypt.compareSync(password, user.password)) {
+      return res.render('auth/sign-in', { 
+        error: 'Invalid username or password' 
+      });
+    }
+
+    req.session.user = {
+      username: user.username,
+      _id: user._id
+    };
+
+    res.redirect('/');
+  } catch (error) {
+    console.error(error);
+    res.render('auth/sign-in', { 
+      error: 'An error occurred during login' 
+    });
+  }
+});
 
 module.exports = router;
 
@@ -108,5 +115,3 @@ module.exports = router;
 
 
 
-
-model.exports = router
