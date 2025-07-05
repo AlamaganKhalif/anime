@@ -1,4 +1,3 @@
-const { application } = require('express');
 const mongoose = require('mongoose');
 
 // Anime subdocument schema

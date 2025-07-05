@@ -1,0 +1,28 @@
+<%- include('../partials/header') %>
+
+<section class="section">
+  <div class="container">
+    <h1 class="title has-text-white">Your Anime List</h1>
+
+    <a href="/users/<%= user._id %>/anime/new" class="button is-primary mb-4">Add New Anime</a>
+
+    <% if (animeList.length === 0) { %>
+      <p class="has-text-white">No anime added yet.</p>
+    <% } else { %>
+      <div class="box">
+        <% animeList.forEach(anime => { %>
+          <div class="box">
+            <h2 class="subtitle"><%= anime.title %></h2>
+            <p>Status: <strong><%= anime.status %></strong></p>
+            <p>Episodes Watched: <%= anime.episodesWatched %></p>
+            <a href="/users/<%= user._id %>/anime/<%= anime._id %>" class="button is-small is-info mt-2">View</a>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>
+
+

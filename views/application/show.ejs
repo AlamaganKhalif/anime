@@ -1,0 +1,19 @@
+<%- include('../partials/header') %>
+
+<section class="section">
+  <div class="container">
+    <h1 class="title has-text-white"><%= anime.title %></h1>
+    <p class="has-text-white">Episodes Watched: <strong><%= anime.episodesWatched %></strong></p>
+    <p class="has-text-white">Status: <strong><%= anime.status %></strong></p>
+
+    <a href="/users/<%= user._id %>/anime/<%= anime._id %>/edit" class="button is-warning mt-4">Edit</a>
+
+    <form action="/users/<%= user._id %>/anime/<%= anime._id %>?_method=DELETE" method="POST" class="mt-2">
+      <button class="button is-danger">Delete</button>
+    </form>
+
+    <a href="/users/<%= user._id %>/anime" class="button is-light mt-4">Back to List</a>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

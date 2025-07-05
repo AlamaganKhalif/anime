@@ -1,0 +1,44 @@
+<%- include('../partials/header') %>
+
+<section class="section">
+  <div class="container">
+    <h1 class="title has-text-white">Add New Anime</h1>
+
+    <form action="/users/<%= user._id %>/anime" method="POST">
+      <div class="field">
+        <label class="label has-text-white">Title</label>
+        <div class="control">
+          <input class="input" type="text" name="title" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label has-text-white">Episodes Watched</label>
+        <div class="control">
+          <input class="input" type="number" name="episodesWatched" min="0" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label has-text-white">Status</label>
+        <div class="control">
+          <div class="select">
+            <select name="status">
+              <option>Watching</option>
+              <option>Completed</option>
+              <option>Plan to Watch</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="control mt-4">
+        <button class="button is-success" type="submit">Add Anime</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>
+
+
