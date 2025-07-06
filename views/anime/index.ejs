@@ -1,1 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Anime List | MyAnimeTracker</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <%- include('../partials/_navbar') %>
+
+  <section class="section">
+    <div class="container">
+      <h1 class="title has-text-centered">My Anime List</h1>
+
+      <div class="tabs is-boxed is-centered mb-5">
+        <ul>
+  <li class="<%= !currentStatus ? 'is-active' : '' %>">
+            <a href="/users/<%= user._id %>/anime">All</a>
+          </li>
+          <% Object.keys(statusDisplay).forEach(status => { %>
+            <li class="<%= currentStatus === status ? 'is-active' : '' %>">
+              <a href="/users/<%= user._id %>/anime?status=<%= status %>">
+                <%= statusDisplay[status] %>
+              </a>
+            </li>
+          <% }) %>
+        </ul>
+      </div>
+
+      <div class="is-flex is-justify-content-space-between is-align-items-center mb-4">
+        <a href="/users/<%= user._id %>/anime/new" class="button is-primary">
+          <span class="icon"><i class="fas fa-plus"></i></span>
+          <span>Add New Anime</span>
+        </a>
+      </div>
+
+      <% if (animeList && animeList.length) { %>
+        <div class="table-container">
+          <table class="table is-fullwidth is-hoverable">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Progress</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% animeList.forEach(anime => { %>
+                <tr>
+                  <td>
+                    <strong><%= anime.title %></strong>
+                    <% if (anime.favorite) { %>
+                      <span class="icon has-text-warning ml-1">
+                        <i class="fas fa-star"></i>
+                      </span>
+                    <% } %>
+                  </td>
+                  <td>
+                    <progress 
+                      class="progress is-small is-info" 
+                      value="<%= anime.episodesWatched %>" 
+                      max="<%= anime.episodes || 1 %>">
+                    </progress>
+                    <small><%= anime.episodesWatched %> / <%= anime.episodes || '?' %> eps</small>
+                  </td>
+                  <td>
+                    <span class="tag <%= getStatusTagClass(anime.status) %>">
+                      <%= statusDisplay[anime.status] %>
+                    </span>
+                  </td>
+                  <td>
+                    <div class="buttons are-small">
+                      <a href="/users/<%= user._id %>/anime/<%= anime._id %>" class="button is-info">View</a>
+                      <a href="/users/<%= user._id %>/anime/<%= anime._id %>/edit" class="button is-warning">Edit</a>
+                      <form action="/users/<%= user._id %>/anime/<%= anime._id %>?_method=DELETE" method="POST" class="is-inline-block">
+                        <button type="submit" class="button is-danger">Delete</button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } else { %>
+        <div class="notification is-light has-text-centered">
+          No anime added yet. <a href="/users/<%= user._id %>/anime/new">Start building your list</a>!
+        </div>
+      <% } %>
+    </div>
+  </section>
+
+  <%- include('../partials/_footer') %>
+
+</body>
+</html>
+
+
 

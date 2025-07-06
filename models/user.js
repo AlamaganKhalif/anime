@@ -5,24 +5,20 @@ const animeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  episodes: {
-    type: Number,
-    min: 1
-  },
+  episodes: Number,
   episodesWatched: {
     type: Number,
     default: 0,
-    min: 0
   },
   status: {
     type: String,
+    required: true,
     enum: ['watching', 'completed', 'on-hold', 'dropped', 'plan-to-watch'],
-    default: 'plan-to-watch',
   },
   score: {
     type: Number,
     min: 1,
-    max: 10
+    max: 10,
   },
   review: String,
   favorite: {
@@ -41,7 +37,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  animeList: [animeSchema],
 });
 
-module.exports = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema);
+module.exports = User;
+

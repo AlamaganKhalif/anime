@@ -1,6 +1,5 @@
-// Load environment variables
-require('dotenv').config();
-
+const dotenv = require('dotenv');
+dotenv.config();
 // Dependencies
 const express = require('express');
 const mongoose = require('mongoose');
@@ -12,7 +11,7 @@ const session = require('express-session');
 const isSignedIn = require('./middleware/is-signed-in.js');
 const passUserToView = require('./middleware/pass-user-to-view.js');
 const authController = require('./controllers/auth.js');
-const animeController = require('./controllers/anime.js');
+const animeController = require("./controllers/anime");
 
 // App Initialization
 const app = express();
@@ -38,22 +37,17 @@ app.use(
   })
 );
 
-// Pass session user to all views
 app.use(passUserToView);
 
-// Set EJS as the view engine
 app.set('view engine', 'ejs');
 
 // Routes
 
-// Homepage
-// index.js or app.js
+
 app.get('/', async (req, res) => {
     if (req.session.user) {
-      // Show the homepage WITH user info (dashboard section)
       res.render('index.ejs', { user: req.session.user });
     } else {
-      // Show the guest homepage
       res.render('index.ejs', { user: null });
     }
   });
@@ -64,13 +58,11 @@ app.get('/', async (req, res) => {
 // Auth routes
 app.use('/auth', authController);
 
-// Protect routes below this point
 app.use(isSignedIn);
 
 // Anime routes (user-specific)
 app.use('/users/:userId/anime', animeController);
 
-// Start Server
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
 });

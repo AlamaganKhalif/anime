@@ -1,2 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit <%= anime.title %> | MyAnimeTracker</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+</head>
+<body>
+  <%- include('../partials/_navbar') %>
 
+  <section class="section">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-half">
+          <h1 class="title">Edit <%= anime.title %></h1>
+          
+          <% if (typeof error !== 'undefined' && error) { %>
+            <div class="notification is-danger">
+              <%= error %>
+            </div>
+          <% } %>
+
+          <form action="/users/<%= user._id %>/anime/<%= anime._id %>?_method=PUT" method="POST">
+            <div class="field">
+              <label class="label">Title</label>
+              <div class="control">
+                <input class="input" type="text" name="title" value="<%= anime.title %>" required>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">Total Episodes</label>
+              <div class="control">
+                <input class="input" type="number" name="episodes" min="1" value="<%= anime.episodes %>">
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">Episodes Watched</label>
+              <div class="control">
+                <input class="input" type="number" name="episodesWatched" min="0" value="<%= anime.episodesWatched %>">
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">Status</label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select name="status" required>
+                    <% Object.keys(statusDisplay).forEach(status => { %>
+                      <option value="<%= status %>" <%= anime.status === status ? 'selected' : '' %>>
+                        <%= statusDisplay[status] %>
+                      </option>
+                    <% }); %>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">Rating (1-10)</label>
+              <div class="control">
+                <input class="input" type="number" name="score" min="1" max="10" value="<%= anime.score %>">
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="checkbox">
+                <input type="checkbox" name="favorite" <%= anime.favorite ? 'checked' : '' %>>
+                Mark as favorite
+              </label>
+            </div>
+
+            <div class="field">
+              <label class="label">Review</label>
+              <div class="control">
+                <textarea class="textarea" name="review" rows="3"><%= anime.review || '' %></textarea>
+              </div>
+            </div>
+
+            <div class="field is-grouped">
+              <div class="control">
+                <button type="submit" class="button is-primary">Update</button>
+              </div>
+              <div class="control">
+                <a href="/users/<%= user._id %>/anime/<%= anime._id %>" class="button is-light">Cancel</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%- include('../partials/_footer') %>
+</body>
+</html>
 
