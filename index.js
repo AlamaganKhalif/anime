@@ -16,7 +16,7 @@ const animeController = require("./controllers/anime");
 // App Initialization
 const app = express();
 const PORT = process.env.PORT || 3040;
-
+const MongoStore = require("connect-mongo");
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on('connected', () => {
@@ -30,13 +30,26 @@ app.use(morgan('dev'));
 app.use(express.static('public'));
 
 app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-  })
-);
-
+    session({
+      secret:
+        process.env.SESSION_SECRET || "your-secret-key-change-in-production",
+      resave: false,
+      saveUninitialized: false, // Changed to false for security
+      store: MongoStore.create({
+        mongoUrl: process.env.MONGODB_URI,
+        collectionName: "sessions",
+        ttl: 24 * 60 * 60, // 1 day TTL
+        autoRemove: "native", // Use MongoDB TTL index
+      }),
+      cookie: {
+        secure: process.env.NODE_ENV === "production",
+        httpOnly: true, // Prevent XSS attacks
+        maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
+        sameSite: "lax", // CSRF protection
+      },
+      name: "project2.sid", // Custom session cookie name
+    })
+  );
 app.use(passUserToView);
 
 app.set('view engine', 'ejs');

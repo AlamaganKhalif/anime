@@ -2,9 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Edit <%= anime.title %> | MyAnimeTracker</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <style>
+    /* Might come back and add custom styles later */
+  </style>
 </head>
 <body>
   <%- include('../partials/_navbar') %>
@@ -13,8 +16,8 @@
     <div class="container">
       <div class="columns is-centered">
         <div class="column is-half">
-          <h1 class="title">Edit <%= anime.title %></h1>
-          
+          <h1 class="title">Editing: <%= anime.title %></h1>
+
           <% if (typeof error !== 'undefined' && error) { %>
             <div class="notification is-danger">
               <%= error %>
@@ -22,6 +25,7 @@
           <% } %>
 
           <form action="/users/<%= user._id %>/anime/<%= anime._id %>?_method=PUT" method="POST">
+            <!-- Title input -->
             <div class="field">
               <label class="label">Title</label>
               <div class="control">
@@ -29,6 +33,7 @@
               </div>
             </div>
 
+            <!-- Total episodes -->
             <div class="field">
               <label class="label">Total Episodes</label>
               <div class="control">
@@ -36,6 +41,7 @@
               </div>
             </div>
 
+            <!-- How many watched -->
             <div class="field">
               <label class="label">Episodes Watched</label>
               <div class="control">
@@ -43,21 +49,21 @@
               </div>
             </div>
 
+            <!-- Status dropdown -->
             <div class="field">
               <label class="label">Status</label>
               <div class="control">
                 <div class="select is-fullwidth">
                   <select name="status" required>
-                    <% Object.keys(statusDisplay).forEach(status => { %>
-                      <option value="<%= status %>" <%= anime.status === status ? 'selected' : '' %>>
-                        <%= statusDisplay[status] %>
-                      </option>
-                    <% }); %>
+                    <% for (let key in statusDisplay) { %>
+                      <option value="<%= key %>" <%= anime.status === key ? 'selected' : '' %>><%= statusDisplay[key] %></option>
+                    <% } %>
                   </select>
                 </div>
               </div>
             </div>
 
+            <!-- Score -->
             <div class="field">
               <label class="label">Rating (1-10)</label>
               <div class="control">
@@ -65,6 +71,7 @@
               </div>
             </div>
 
+            <!-- Favorite checkbox -->
             <div class="field">
               <label class="checkbox">
                 <input type="checkbox" name="favorite" <%= anime.favorite ? 'checked' : '' %>>
@@ -72,22 +79,27 @@
               </label>
             </div>
 
+            <!-- Review text -->
             <div class="field">
               <label class="label">Review</label>
               <div class="control">
+                <!-- Could default this to 'No review yet.' but keeping it clean -->
                 <textarea class="textarea" name="review" rows="3"><%= anime.review || '' %></textarea>
               </div>
             </div>
 
+            <!-- Buttons -->
             <div class="field is-grouped">
               <div class="control">
                 <button type="submit" class="button is-primary">Update</button>
               </div>
               <div class="control">
+                <!-- Minor typo fix: was missing a space -->
                 <a href="/users/<%= user._id %>/anime/<%= anime._id %>" class="button is-light">Cancel</a>
               </div>
             </div>
           </form>
+
         </div>
       </div>
     </div>
@@ -96,4 +108,5 @@
   <%- include('../partials/_footer') %>
 </body>
 </html>
+
 
